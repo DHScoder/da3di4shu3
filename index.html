@@ -1,0 +1,208 @@
+﻿<!--
+    2020年7月27日18:01:40
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>姓杜的真帅</title>
+        <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        /*body添加背景图片*/
+        body{
+            background: url(./img/bj1.jpg);
+            background-repeat: no-repeat;
+            background-size: 100%  100%;
+            background-attachment: fixed;
+        }
+        /*居中*/
+        table{
+            margin: 0 auto;
+        }
+        
+        #a{
+            display: block; 
+            margin: 0 auto;
+        }
+
+        .sheng{
+            color:red;
+        }
+        </style>
+        <script type="text/javascript">
+            //全局变量
+            var imgs; 
+            var gameTime = 0; //游戏时间
+            //计时器
+            var time1;
+            var time2;
+            var time3;
+
+            //打中的地鼠数量
+            var count;
+
+            function start(){
+                count = 0;
+                gameTime = 20;
+
+                //隔一秒执行一次changeImg()函数
+               time1 = window.setInterval("changeImg()", 700);
+               
+               //游戏时间倒计时
+               time2 = window.setInterval("countetTime()", 1000);
+                
+            }
+
+            //随机切换表格中地鼠钻出的图片
+            function changeImg(){
+                //获取img的对象返回一个数组
+                imgs = document.getElementsByTagName("img");
+                     
+                //获取数组的随机下标
+                var index = Math.floor(Math.random() * imgs.length);
+                
+                //获得随机的一个图片对象
+                var img = imgs[index];
+            
+                //给这个随机的图赋上一个老鼠的图片
+                img.src = "./img/ls1.png";
+
+                //老鼠在外面的时间
+                time3 = window.setTimeout("mouseBack(" + index +")", 800);
+            }
+            
+            //让老鼠的头缩回去
+            function mouseBack(index){
+                var img = imgs[index];
+                img.src = "./img/bj2.jpg";
+            }
+
+            // 切换被打的图片
+            function du(img){
+                //获取img.src的地址以字符串的形式付给name
+                var name = img.src;
+                //截取字符串减7就是从字符串从后往前数7位截取就是当前点击的图片名字
+                var subName = name.substr(name.length - 7);
+                //判断两张图片名是否相同,是的话切换被打老鼠的图片
+                if(subName == "ls1.png"){
+                    img.src = "./img/ls2.jpg";
+                    count++;     
+                    //播放音效
+                    var x = document.getElementById("myAudio");
+                    x.play();
+                       //判断是播放音效
+                    
+                    if(count == 5){
+                        var d = document.getElementById("djy");
+                        d.play();
+                    }else if(count == 15){
+                        var d = document.getElementById("djy");
+                        d.play();
+                    }
+                }
+            }
+            
+            //给游戏计算的函数
+            function countetTime(){
+                gameTime--;
+                //把时间更新到页面上去
+                var game = document.getElementById("gametime");
+                game.innerHTML = gameTime;
+                if(gameTime == 0){
+                    gameOver();
+                }
+            }
+
+            //游戏结束
+            function gameOver(){
+                clearInterval(time1);
+                clearInterval(time2);
+                clearTimeout(time3);
+                for(var i = 0; i < imgs.length; ++i){
+                    imgs[i].src = "./img/bj2.jpg";
+                }
+                if(count < 5 ){
+                alert("游戏结束,你以共打了" + count + "个地鼠！" + "\n你打的可真差劲！");
+                }else if(count >= 5 && count < 10){
+                    alert("游戏结束,你以共打了" + count + "个地鼠！" +  "\n你打的还不错");
+                }else if(count >= 10 && count < 15){
+                    alert("游戏结束,你以共打了" + count + "个地鼠！" + "\n你已经接近神了！");
+                }else if(count >= 15 && count < 20){
+                    alert("游戏结束,你以共打了" + count + "个地鼠！" + "\n你已经超神了！");
+                }else if(count >= 20 && count < 25){
+                    alert("游戏结束,你以共打了" + count + "个地鼠！" + "\n厉害了！！ 你已经快超越作者了");
+                }else{
+                    alert("游戏结束,你以共打了" + count + "个地鼠！" + "\n这颗星球上的地鼠已经被你灭绝了\u2620");
+                }
+            }
+         
+        </script>
+    </head>
+    <body>
+        <!--加入背景音乐-->
+        <audio autoplay="autoplay" loop="loop">
+            <source src="./aodio/bg1.mp3" type="audio/mpeg">  
+            <source src="./aodio/bg.ogg" type="audio/ogg"> 
+        </audio>
+
+        <!--加入音效-->
+        <audio id="myAudio">
+            <source src="./aodio/yx1.mp3" type="audio/mpeg">
+        </audio>
+
+        <audio id="djy">
+            <source src="./aodio/zb.mp3" type="audio/mpeg">
+            <source src="./aodio/zb.ogg" type="audio/ogg">    
+        </audio>
+        <center>
+            <p class="sheng" >
+            剩余时间
+            <span id="gametime">0</span>
+             </p>
+        </center>
+        <!--开始按钮-->
+        <input type="button" id="a" value="开始游戏" onclick="start()" />
+        <!--定义五行五列-->
+        <table border="1px">
+            <tr>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+            </tr>
+            <tr>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+            </tr>
+            <tr>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+            </tr>
+            <tr>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+            </tr>
+            <tr>
+                <td><img src="./img//bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+                <td><img src="./img/bj2.jpg" alt="绿" onclick="du(this)"></td>
+            </tr>
+        </table>
+    </body>
+</html>
